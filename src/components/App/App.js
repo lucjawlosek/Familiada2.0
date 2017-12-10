@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import Grid from 'react-bootstrap/lib/Grid'
 import Row from 'react-bootstrap/lib/Row'
 import Col from 'react-bootstrap/lib/Col'
-import logo from './logo.svg'
 
 import BoardPortal from '../BoardPortal/BoardPortal'
+import ScoreBoard from '../ScoreBoard/ScoreBoard'
 import './App.css'
 
 class App extends Component {
@@ -27,17 +27,46 @@ class App extends Component {
 
   render() {
     return (
-      <Grid>
-        <Row className="show-grid">
-          <Col xs={12} md={8}><code> Coś </code></Col>
-          <Col xs={6} md={4}><code> Coś tam</code></Col>
+      <Grid fluid>
+        <Row>
+          <Col xs={12} className='Header'>
+          <div>Familiada</div>
+          <div>edycja: Sagitonowa wigilia</div>
+
+          </Col>
         </Row>
+
+        <Row>
+          <Col xs={12} md={4}>
+          </Col>
+          <Col xs={12} md={4}>
+          </Col>
+          <Col xs={6} md={2}>
+          </Col>
+          <Col xs={6} md={2}>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs={12} md={4}>
+          </Col>
+          <Col xs={12} md={4}>
+          </Col>
+          <Col xs={12} md={4}>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs={12}>
+          </Col>
+        </Row>
+
         <button onClick={this.toggleWindowPortal}>
           {this.state.showWindowPortal ? 'Close the' : 'Open a'} Portal
         </button>
         {this.state.showWindowPortal && (
           <BoardPortal>
-            <p>Board</p>
+            <ScoreBoard />
           </BoardPortal>
         )}
       </Grid>

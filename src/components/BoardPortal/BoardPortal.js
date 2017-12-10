@@ -20,6 +20,11 @@ class BoardPortal extends PureComponent {
 
     // STEP 4: append the container <div> (that has props.children appended to it) to the body of the new window
     this.externalWindow.document.body.appendChild(this.containerEl);
+    this.externalWindow.document.body.style.margin = '0';
+
+    this.externalWindow.document.body.style.width = '100vw'
+    this.externalWindow.document.body.style.height = '100vh'
+
   }
 
   componentWillUnmount() {
