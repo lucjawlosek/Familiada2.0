@@ -17,20 +17,24 @@ class QuestionBoard extends Component {
 
   renderQuestion (question, index) {
     const {selectedQuestion, onSelectQuestion} = this.props
-    return <ListGroupItem onClick={() => onSelectQuestion(question.id)} key={question.id + index} active={selectedQuestion === question.id}>{question.question}</ListGroupItem>
+    return <ListGroupItem bsStyle='warning' onClick={() => onSelectQuestion(question.id)} key={question.id + index} active={selectedQuestion === question.id}>{question.question}</ListGroupItem>
   }
 
   render () {
-    const {onTeamChange} = this.props
+    const {onTeamChange, redTeamScore, blueTeamScore} = this.props
     return (
-      <div className="StateContainer">
+      <div className="QuestionsContainer">
+        <ListGroup bsClass='QuestionsList'>
+          {questions.map(this.renderQuestion)}
+        </ListGroup>
         <ButtonToolbar>
           <Button bsStyle="danger" onClick={() => onTeamChange('red')}>Gra Drużyna Czerwona</Button>
           <Button bsStyle="primary" onClick={() => onTeamChange('blue')}>Gra Drużyna Niebieska</Button>
         </ButtonToolbar>
-        <ListGroup>
-          {questions.map(this.renderQuestion)}
-        </ListGroup>
+        <div className="TeamScores">
+          <span>{redTeamScore}</span>
+          <span>{blueTeamScore}</span>
+        </div>
       </div>
     )
   }
