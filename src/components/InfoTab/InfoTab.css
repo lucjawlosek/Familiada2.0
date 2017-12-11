@@ -1,0 +1,48 @@
+.BlueTeam {
+  color: #5bc0de;
+}
+
+.RedTeam {
+  color: #d9534f;
+}
+
+.InfoTabContainer {
+  background-color: #DDDDDD;
+  padding: 4px 0;
+  box-shadow: 0px 4px 4px 0px #ccc;
+}
+
+.InfoTabContainer > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 60px;
+  justify-content: center;
+  padding: 0;
+}
+
+.InfoTabContainer :nth-child(2) {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.InfoTabContainer :nth-child(3) {
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+}
+
+.InfoTabContainer :nth-child(3) span {
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.InfoTabContainer :nth-child(4) {
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+}
+
+.InfoTabContainer :nth-child(4) span {
+  font-weight: bold;
+}

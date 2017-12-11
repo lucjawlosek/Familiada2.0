@@ -1,0 +1,15 @@
+.StateContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.StateContainer > div {
+  padding-top: 24px;
+}
+
+.StateContainer :first-child{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}

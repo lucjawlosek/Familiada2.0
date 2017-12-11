@@ -1,0 +1,21 @@
+.QuestionPlaceholder {
+  color: #aaaaaa;
+  text-align: center;
+  padding-top: 45px;
+  font-size: 18px;
+}
+
+.AnswersContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+.AnswersContainer > div {
+  margin-bottom: 24px;
+}
+
+.AnswersContainer :first-child {
+  /*padding-left: 5px;*/
+}

@@ -7,28 +7,19 @@ import SplashScreen from '../SplashScreen/SplashScreen'
 import './ScoreBoard.css'
 
 class ScoreBoard extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showWindowPortal: false,
-    }
-  }
-
-  render() {
-
+  render () {
     const {started = false} = this.props
 
-    if(!started) {
-        return <SplashScreen />
+    if (!started) {
+      return <SplashScreen />
     }
 
     return (
       <Grid fluid>
         <Row>
           <Col xs={12} className='Header'>
-          <div>Familiada</div>
-          <div>edycja: Sagitonowa wigilia</div>
+            <div>Familiada</div>
+            <div>edycja: Sagitonowa wigilia</div>
 
           </Col>
         </Row>
