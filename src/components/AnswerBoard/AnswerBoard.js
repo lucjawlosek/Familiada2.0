@@ -20,7 +20,7 @@ class AnswerBoard extends Component {
   }
 
   render () {
-    const {selectedQuestion, onBadAnswer, onSelectionChange} = this.props
+    const {selectedQuestion, onBadAnswer, onSelectionChange, value} = this.props
     const selectedQuestionItem = questions.find(question => question.id === selectedQuestion)
 
     if(selectedQuestion < 1 || selectedQuestionItem === undefined) {
@@ -29,15 +29,14 @@ class AnswerBoard extends Component {
 
     return (
       <div className="AnswersContainer">
-        <ButtonToolbar>
-          <ToggleButtonGroup type="checkbox" vertical={true} defaultValue={[]} onChange={onSelectionChange}>
+        <ButtonToolbar bsClass='AnswersList'>
+          <ToggleButtonGroup type="checkbox" vertical={true} value={value} defaultValue={[]} onChange={onSelectionChange}>
             {selectedQuestionItem.answers.map(this.renderAnswer)}
           </ToggleButtonGroup>
         </ButtonToolbar>
         <ButtonToolbar>
           <Button bsStyle="danger" onClick={onBadAnswer}>Zła odpowiedź</Button>
         </ButtonToolbar>
-
       </div>
     )
   }

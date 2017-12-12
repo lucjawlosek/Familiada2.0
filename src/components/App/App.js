@@ -19,14 +19,16 @@ class App extends Component {
     this.state = {
       showWindowPortal: false,
       taken: false,
-      player: '',
+      player: 'red',
       gameState: 'pending',
       blueTeamScore: 0,
       redTeamScore: 0,
       currentScore: 0,
-      selectedQuestion: 0,
+      selectedQuestion: -1,
       currentMultiplier: 1,
-      gameStarted: false
+      badAnswers: 0,
+      gameStarted: false,
+      cashedOut: false
     }
 
     this.openWindowPortal = this.openWindowPortal.bind(this)
@@ -42,18 +44,27 @@ class App extends Component {
   openWindowPortal () {
     this.setState(state => ({
       ...state,
-      showWindowPortal: true
+      showWindowPortal: true,
+      cashedOut: false,
+      gameStarted: true,
+      gameState: '1on1',
+      selectedAnswers: [],
+      badAnswers: 0,
+      taken: false
     }))
   }
 
-  cashToPlayer () {
-    const {player} = this.state
-    const extraScore = this.state.currentScore * this.state.currentMultiplier
-    this.setState(state => ({
-      ...state,
-      blueTeamScore: player === 'blue' ? state.blueTeamScore + extraScore : state.blueTeamScore,
-      redTeamScore: player === 'red' ? state.redTeamScore + extraScore : state.redTeamScore
-    }))
+  cashToPlayer (value) {
+    const {player, cashedOut} = this.state
+    const extraScore = value * this.state.currentMultiplier
+    if(!cashedOut) {
+      this.setState(state => ({
+        ...state,
+        cashedOut: true,
+        blueTeamScore: player === 'blue' ? state.blueTeamScore + extraScore : state.blueTeamScore,
+        redTeamScore: player === 'red' ? state.redTeamScore + extraScore : state.redTeamScore
+      }))
+    }
   }
 
   finishGame () {
@@ -73,9 +84,13 @@ class App extends Component {
   selectQuestion (selectedQuestionId) {
     this.setState(state => ({
       ...state,
+      cashedOut: false,
       selectedQuestion: selectedQuestionId,
       gameStarted: true,
-      gameState: '1on1'
+      gameState: '1on1',
+      selectedAnswers: [],
+      badAnswers: 0,
+      taken: false
     }))
   }
 
@@ -93,15 +108,18 @@ class App extends Component {
     }))
   }
 
-  badAnswer (team) {
+  badAnswer () {
+    const newPlayer = this.state.player === 'red' ? 'blue' : 'red'
     this.setState(state => ({
       ...state,
-      player: team
+      badAnswers: state.badAnswers <= 3 ? state.badAnswers + 1 : state.badAnswers,
+      taken: state.badAnswers >= 2,
+      player: state.badAnswers >= 2 ? newPlayer : state.player
     }))
   }
 
   render () {
-    const {taken, player, gameState, selectedQuestion} = this.state
+    const {taken, player, gameState, selectedQuestion, selectedAnswers, blueTeamScore, redTeamScore, cashedOut, badAnswers, currentMultiplier} = this.state
     return (
       <Grid fluid>
         <Row>
@@ -116,24 +134,28 @@ class App extends Component {
         <Row>
           <Col xs={12} md={4}>
             <Multiplier value={1} onChange={this.changeMultiplier} />
-            <StateManager onCashPlayer={this.cashToPlayer} onFinishGame={this.finishGame} />
+            <StateManager onCashPlayer={this.cashToPlayer} onFinishGame={this.finishGame} cashedOut={cashedOut} selectedAnswers={selectedAnswers} selectedQuestion={selectedQuestion}/>
           </Col>
           <Col xs={12} md={4}>
-            <QuestionBoard selectedQuestion={selectedQuestion} onSelectQuestion={this.selectQuestion} onTeamChange={this.changeTeam} />
+            <QuestionBoard selectedQuestion={selectedQuestion} onSelectQuestion={this.selectQuestion} onTeamChange={this.changeTeam} blueTeamScore={blueTeamScore} redTeamScore={redTeamScore} />
           </Col>
           <Col xs={12} md={4}>
-            <AnswerBoard selectedQuestion={selectedQuestion} onSelectionChange={this.selectAnswer} onBadAnswer={this.badAnswer} />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col xs={12}>
+            <AnswerBoard value={selectedAnswers} selectedQuestion={selectedQuestion} onSelectionChange={this.selectAnswer} onBadAnswer={this.badAnswer} />
           </Col>
         </Row>
 
         {this.state.showWindowPortal && (
           <BoardPortal>
-            <ScoreBoard />
+            <ScoreBoard
+              blueTeamScore={blueTeamScore}
+              redTeamScore={redTeamScore}
+              selectedQuestion={selectedQuestion}
+              selectedAnswers={selectedAnswers}
+              badAnswers={badAnswers}
+              player={player}
+              gameState={gameState}
+              multiplier={currentMultiplier}
+            />
           </BoardPortal>
         )}
       </Grid>

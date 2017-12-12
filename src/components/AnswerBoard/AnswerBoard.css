@@ -8,6 +8,7 @@
 .AnswersContainer {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   margin-top: 24px;
 }
@@ -18,4 +19,24 @@
 
 .AnswersContainer :first-child {
   /*padding-left: 5px;*/
+}
+
+.AnswersContainer label {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.AnswersList {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.AnswersList > div {
+  width: 60%;
+  max-width: 60%;
 }

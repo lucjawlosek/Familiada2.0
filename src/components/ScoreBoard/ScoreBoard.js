@@ -1,45 +1,64 @@
 import React, { Component } from 'react'
-import Grid from 'react-bootstrap/lib/Grid'
-import Row from 'react-bootstrap/lib/Row'
-import Col from 'react-bootstrap/lib/Col'
 
-import SplashScreen from '../SplashScreen/SplashScreen'
+import questions from '../questions'
+
+import SplashScreen from './SplashScreen/SplashScreen'
+import BoardContainer from './BoardContainer/BoardContainer'
+import UserAnswers from './UserAnswers/UserAnswers'
+import WarningList from './WarningList/WarningList'
 import './ScoreBoard.css'
 
 class ScoreBoard extends Component {
   render () {
-    const {started = false} = this.props
-
-    if (!started) {
+    const { blueTeamScore, redTeamScore, selectedQuestion, selectedAnswers, badAnswers, player, multiplier } = this.props
+    if (selectedQuestion === -1) {
       return <SplashScreen />
     }
 
+    const Header = {
+      width: '100vw',
+      textAlign: 'center',
+      fontSize: '6vh',
+      paddingTop: '2vw'
+    }
+
+    const Body = {
+      width: '100vw',
+      minHeight: '45vh',
+      display: 'flex',
+      flexDirection: 'row',
+      paddingTop: '1vw'
+    }
+
+    const Footer = {
+      width: '96vw',
+      fontSize: '6vh',
+      paddingTop: '6vw',
+      paddingLeft: '2vw',
+      paddingRight: '2vw',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    }
+
+    const currentScore = questions.find(question => question.id === selectedQuestion).answers.filter((answer, index) => selectedAnswers.includes(index)).reduce((acc, answer) => acc + answer.score, 0)
+    const playerWithWarnings = badAnswers !== 3 ? (player === 'red' ? 'red' : 'blue') : (player === 'red' ? 'blue' : 'red')
+
     return (
-      <Grid fluid>
-        <Row>
-          <Col xs={12} className='Header'>
-            <div>Familiada</div>
-            <div>edycja: Sagitonowa wigilia</div>
-
-          </Col>
-        </Row>
-
-        <Row>
-          <Col xs={12} md={4}>
-          </Col>
-          <Col xs={12} md={4}>
-          </Col>
-          <Col xs={6} md={2}>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col xs={12}>
-          </Col>
-          <Col xs={12}>
-          </Col>
-        </Row>
-      </Grid>
+      <BoardContainer>
+        <div style={Header}>
+          {currentScore * multiplier + ''}
+        </div>
+        <div style={Body}>
+          <WarningList badAnswers={playerWithWarnings === 'red' ? (badAnswers < 3 ? badAnswers : 3) : (badAnswers > 3 ? badAnswers : 0)} />
+          <UserAnswers selectedAnswers={selectedAnswers} selectedQuestion={selectedQuestion} currentScore={currentScore} />
+          <WarningList badAnswers={playerWithWarnings === 'blue' ? (badAnswers < 3 ? badAnswers : 3) : (badAnswers > 3 ? badAnswers : 0)} />
+        </div>
+        <div style={Footer}>
+          <span>{redTeamScore}</span>
+          <span>{blueTeamScore}</span>
+        </div>
+      </BoardContainer>
     )
   }
 }

@@ -1,0 +1,28 @@
+.QuestionsList {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.QuestionsContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.QuestionsContainer :nth-child(2){
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.QuestionsContainer > div {
+  margin-top: 24px;
+}
+
+.TeamScores {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-weight: bold;
+}
