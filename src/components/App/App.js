@@ -12,6 +12,12 @@ import QuestionBoard from '../QuestionBoard/QuestionBoard'
 import AnswerBoard from '../AnswerBoard/AnswerBoard'
 import './App.css'
 
+import correct from './1-dobra_odpowiedz.ogg'
+import wrong from './2-utrata.ogg'
+import start from './3-start.ogg'
+import end from './4-koniec.ogg'
+import questionChange from './5-przerwa.ogg'
+
 class App extends Component {
   constructor (props) {
     super(props)
@@ -19,7 +25,7 @@ class App extends Component {
     this.state = {
       showWindowPortal: false,
       taken: false,
-      player: 'red',
+      player: '',
       gameState: 'pending',
       blueTeamScore: 0,
       redTeamScore: 0,
@@ -28,7 +34,9 @@ class App extends Component {
       currentMultiplier: 1,
       badAnswers: 0,
       gameStarted: false,
-      cashedOut: false
+      cashedOut: false,
+      finished: false,
+      started: false
     }
 
     this.openWindowPortal = this.openWindowPortal.bind(this)
@@ -70,7 +78,8 @@ class App extends Component {
   finishGame () {
     this.setState(state => ({
       ...state,
-      showWindowPortal: false
+      showWindowPortal: false,
+      finished: true
     }))
   }
 
@@ -84,10 +93,12 @@ class App extends Component {
   selectQuestion (selectedQuestionId) {
     this.setState(state => ({
       ...state,
+      started: true,
       cashedOut: false,
       selectedQuestion: selectedQuestionId,
       gameStarted: true,
       gameState: '1on1',
+      player: '',
       selectedAnswers: [],
       badAnswers: 0,
       taken: false
@@ -97,29 +108,38 @@ class App extends Component {
   changeTeam (team) {
     this.setState(state => ({
       ...state,
-      player: team
+      player: team,
+      badAnswers: 0
     }))
   }
 
   selectAnswer (selectedAnswers) {
     this.setState(state => ({
       ...state,
-      selectedAnswers: selectedAnswers
+      selectedAnswers: selectedAnswers,
+      gameState: 'team'
     }))
   }
 
   badAnswer () {
     const newPlayer = this.state.player === 'red' ? 'blue' : 'red'
-    this.setState(state => ({
-      ...state,
-      badAnswers: state.badAnswers <= 3 ? state.badAnswers + 1 : state.badAnswers,
-      taken: state.badAnswers >= 2,
-      player: state.badAnswers >= 2 ? newPlayer : state.player
-    }))
+    if(!this.state.player) {
+      this.setState(state => ({
+        ...state,
+        badAnswers: state.badAnswers + 1
+      }))
+    } else {
+      this.setState(state => ({
+        ...state,
+        badAnswers: state.badAnswers <= 3 ? state.badAnswers + 1 : state.badAnswers,
+        taken: state.badAnswers >= 2,
+        player: state.badAnswers === 3 || state.badAnswers === 2 ? newPlayer : state.player
+      }))
+    }
   }
 
   render () {
-    const {taken, player, gameState, selectedQuestion, selectedAnswers, blueTeamScore, redTeamScore, cashedOut, badAnswers, currentMultiplier} = this.state
+    const {taken, player, gameState, selectedQuestion, selectedAnswers, blueTeamScore, redTeamScore, cashedOut, badAnswers, currentMultiplier, showWindowPortal, finished, started} = this.state
     return (
       <Grid fluid>
         <Row>
@@ -144,7 +164,41 @@ class App extends Component {
           </Col>
         </Row>
 
-        {this.state.showWindowPortal && (
+        {
+          started
+            ? <audio autoPlay>
+              <source src={start}/>
+            </audio>
+            : null
+        }
+        {
+          finished
+            ? <audio autoPlay>
+            <source src={end}/>
+          </audio>
+            : null
+        }
+        {
+          new Array(badAnswers).fill(1).map((value, index) => <audio key={index} autoPlay>
+            <source src={wrong}/>
+          </audio>)
+        }
+        {
+          selectedAnswers
+            ? selectedAnswers.map((value, index) => <audio key={index} autoPlay>
+                <source src={correct}/>
+              </audio>)
+             : null
+        }
+        {
+          cashedOut
+            ? <audio autoPlay>
+            <source src={questionChange}/>
+          </audio>
+            : null
+        }
+
+        {showWindowPortal && (
           <BoardPortal>
             <ScoreBoard
               blueTeamScore={blueTeamScore}

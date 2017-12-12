@@ -20,7 +20,7 @@ class InfoTab extends Component {
           { gameState === 'team' ? 'Drużyna' : ''}
         </Col>
         {
-          gameState !== 'pending' ?
+          gameState === 'team' && player ?
             <Col xs={6} md={2}>
               Odpowiada: { player === 'blue' ? <span className='BlueTeam'>Drużyna Niebieska</span> : <span className='RedTeam'>Drużyna Czerwona</span>}
             </Col>
@@ -30,7 +30,7 @@ class InfoTab extends Component {
             </Col>
         }
         {
-          gameState !== 'pending' ?
+          gameState === 'team' && player ?
             <Col xs={6} md={2}>
               Przejęte: { taken ? <span>Tak</span> : <span>Nie</span>}
             </Col>

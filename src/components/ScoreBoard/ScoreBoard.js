@@ -42,7 +42,7 @@ class ScoreBoard extends Component {
     }
 
     const currentScore = questions.find(question => question.id === selectedQuestion).answers.filter((answer, index) => selectedAnswers.includes(index)).reduce((acc, answer) => acc + answer.score, 0)
-    const playerWithWarnings = badAnswers !== 3 ? (player === 'red' ? 'red' : 'blue') : (player === 'red' ? 'blue' : 'red')
+    const playerWithWarnings = badAnswers !== 3 ? player : (player === 'red' ? 'blue' : 'red')
 
     return (
       <BoardContainer>
@@ -50,9 +50,9 @@ class ScoreBoard extends Component {
           {currentScore * multiplier + ''}
         </div>
         <div style={Body}>
-          <WarningList badAnswers={playerWithWarnings === 'red' ? (badAnswers < 3 ? badAnswers : 3) : (badAnswers > 3 ? badAnswers : 0)} />
+          <WarningList badAnswers={!player ? 0 : (playerWithWarnings === 'red' ? (badAnswers < 4 ? badAnswers : 3) : (badAnswers > 3 ? badAnswers : 0))} />
           <UserAnswers selectedAnswers={selectedAnswers} selectedQuestion={selectedQuestion} currentScore={currentScore} />
-          <WarningList badAnswers={playerWithWarnings === 'blue' ? (badAnswers < 3 ? badAnswers : 3) : (badAnswers > 3 ? badAnswers : 0)} />
+          <WarningList badAnswers={!player ? 0 : (playerWithWarnings === 'blue' ? (badAnswers < 4 ? badAnswers : 3) : (badAnswers > 3 ? badAnswers : 0))} />
         </div>
         <div style={Footer}>
           <span>{redTeamScore}</span>
