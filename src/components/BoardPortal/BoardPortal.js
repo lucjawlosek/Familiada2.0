@@ -16,7 +16,7 @@ class BoardPortal extends PureComponent {
 
   componentDidMount () {
     // STEP 3: open a new browser window and store a reference to it
-    this.externalWindow = window.open('', '', 'width=600,height=400,left=200,top=200')
+    this.externalWindow = window.open('', 'Game Board', 'width=600,height=400,left=200,top=200')
 
     const special_font = document.createElement("style");
     special_font.type = "text/css";

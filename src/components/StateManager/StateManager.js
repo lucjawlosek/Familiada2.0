@@ -20,11 +20,11 @@ class StateManager extends Component {
   }
 
   render () {
-    const {onFinishGame, cashedOut} = this.props
+    const {onFinishGame, cashedOut, selectedQuestion} = this.props
     return (
       <div className="StateContainer">
         <ButtonToolbar>
-          <Button bsStyle="success" bsSize="large" onClick={this.cashOut} disabled={cashedOut}><Glyphicon glyph="eur" />&nbsp;Wypłać</Button>
+          <Button bsStyle="success" bsSize="large" onClick={this.cashOut} disabled={cashedOut || selectedQuestion === -1}><Glyphicon glyph="eur" />&nbsp;Wypłać</Button>
         </ButtonToolbar>
         <ButtonToolbar>
           <Button bsStyle="danger" bsSize="large" onClick={onFinishGame}><Glyphicon glyph="remove" />&nbsp;Koniec Gry</Button>
